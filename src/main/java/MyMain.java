@@ -51,8 +51,12 @@ public class MyMain {
 
     // Tail Recursive Method:
     public static int sumTR(int[] arr, int i, int sum) {
-        // YOUR CODE HERE
-        return -1;
+        if(i == arr.length){
+            return sum;
+        }
+        else{
+            return sumTR(arr, i + 1, sum + arr[i]);
+        }
     }
 
 
@@ -69,14 +73,20 @@ public class MyMain {
 
     // Wrapper Method (Provided for you):
     public static boolean search(ArrayList<Integer> list, int x) {
-        // YOUR CODE HERE
-        return false;
+        return searchTR(list, x, 0);
     }
 
     // Tail Recursive Method:
     public static boolean searchTR(ArrayList<Integer> list, int x, int i) {
-        // YOUR CODE HERE
-        return false;
+        if(i == list.size()){
+            return false;
+        }
+        else if(x == list.get(i)){
+            return true;
+        }
+        else{
+            return searchTR(list, x, i + 1);
+        }
     }
 
 
@@ -89,13 +99,22 @@ public class MyMain {
 
     // Wrapper Method (Provided for you):
     public static boolean allEven(int[] arr) {
-        // YOUR CODE HERE
-        return false;
+        return alleven2(arr, 0);
     }
 
     // Tail Recursive Method:
     // You should write this yourself!
-
+    public static boolean alleven2(int[] arr, int i){
+        if(i == arr.length){
+            return true;
+        }
+        else if(arr[i] % 2 != 0){
+            return false;
+        }
+        else{
+            return alleven2(arr, i + 1);
+        }
+    }
 
     // ********************
     // Examples From Class:
@@ -136,24 +155,46 @@ public class MyMain {
 
     // Wrapper method
     public static boolean hasCountCopies(int[] arr, int x, int count) {
-        // YOUR CODE HERE
-        return false;
+        return hascountcopies2(arr, x, count, 0, 0);
     }
 
     // You may want a tail recursive method
-
+    public static boolean hascountcopies2(int[] arr, int x, int count, int i, int realcount){
+        if(i == arr.length && realcount == count){
+            return true;
+        }
+        else if(i == arr.length && realcount != count){
+            return false;
+        }
+        else if(arr[i] == x){
+            return hascountcopies2(arr, x, count, i + 1, realcount + 1);
+        }
+        else{
+            return hascountcopies2(arr, x, count, i + 1, realcount);
+        }
+    }
 
     // This recursive method checks if the array is sorted in
     // non-decreasing order
 
     // Wrapper method
     public static boolean isSorted(ArrayList<Integer> list) {
-        // YOUR CODE HERE
-        return false;
+        return isSorted2(list, 0);
     }
 
     // You may want a tail recursive method
+    public static boolean isSorted2(ArrayList<Integer> list, int i){
+        if(i == list.size() - 1){
+            return true;
+        }
+        else if (list.get(i) > list.get(i + 1)){
+            return false;
+        }
+        else{
+            return isSorted2(list, i + 1);
+        }
 
+    }
 
 
 
@@ -183,8 +224,33 @@ public class MyMain {
 
     // No tail recursion necessary!
     public static boolean escape(char[][] mat, int row, int col) {
-        // YOUR CODE HERE
-        return false;
+        if (row < 0 || col < 0 || row >= mat.length || col >= mat[0].length){
+            return false;
+        }
+        // If we're at wall, don't do anything
+        else if (mat[row][col] == 'w') {
+            return false;
+        }
+        // If we've already visited there, let's return early
+        else if (mat[row][col] == '*') {
+            return false;
+        }
+        else if (mat[row][col] == 'f') {
+            return true;
+        }
+        else {
+            // Leave "breadcrumbs"
+            mat[row][col] = '*';
+
+            // Visit our neighbors (left, up, right, down)
+            boolean b1 = escape(mat, row, col-1);
+            boolean b2 = escape(mat, row-1, col);
+            boolean b3 = escape(mat, row, col+1);
+            boolean b4 = escape(mat, row+1, col);
+
+            return (b1 || b2 || b3 || b4);
+        }
+
     }
 
 
